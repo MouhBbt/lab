@@ -26,8 +26,9 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// Seed experiments (development only)
-router.post('/seed', async (req, res) => {
+// Seed experiments (teacher-only, development helper)
+router.post('/seed', auth, async (req, res) => {
+  if (req.user.role !== 'teacher') return res.status(403).json({ message: 'Teachers only' });
   try {
     await Experiment.deleteMany({});
     const experiments = [
