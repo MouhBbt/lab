@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virtual Lab — Physics &amp; Chemistry Simulation</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     TOP NAVIGATION BAR
+     ════════════════════════════════════════════════════════ -->
+<nav class="navbar">
+  <a class="navbar-brand" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0
+               0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+    </svg>
+    Virtual Lab
+  </a>
+
+  <ul class="navbar-tabs">
+    <li><a href="#" class="active">Physics</a></li>
+    <li><a href="#">Chemistry</a></li>
+    <li><a href="#">Data Analysis</a></li>
+    <li><a href="#">Reports</a></li>
+  </ul>
+
+  <span class="status-badge">
+    <span class="status-dot"></span>
+    Simulation Active
+  </span>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════
+     MAIN LAYOUT
+     ════════════════════════════════════════════════════════ -->
+<div class="app-layout">
+
+  <!-- ── SIDEBAR ─────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Overview</div>
+      <button class="sidebar-item active" data-page="dashboard">
+        <span class="icon">🏠</span> Dashboard
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Physics</div>
+      <button class="sidebar-item" data-page="pendulum">
+        <span class="icon">⚖️</span> Pendulum
+      </button>
+      <button class="sidebar-item" data-page="projectile">
+        <span class="icon">🎯</span> Projectile Motion
+      </button>
+      <button class="sidebar-item" data-page="waves">
+        <span class="icon">〰️</span> Waves &amp; Oscilloscope
+      </button>
+      <button class="sidebar-item" data-page="circuit">
+        <span class="icon">⚡</span> Electric Circuit
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Chemistry</div>
+      <button class="sidebar-item" data-page="chemistry">
+        <span class="icon">🧪</span> Acid–Base Titration
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CONTENT ─────────────────────────────────── -->
+  <main class="main-content">
+
+    <!-- ════ DASHBOARD PAGE ════════════════════════════ -->
+    <section id="page-dashboard" class="page active">
+      <div class="page-header">
+        <h2>🔬 Virtual Laboratory</h2>
+        <p>Interactive physics &amp; chemistry simulations — real science, virtual environment.</p>
+      </div>
+
+      <!-- Stats row -->
+      <div class="dash-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue">🔭</div>
+          <div class="stat-info">
+            <h4>Experiments Available</h4>
+            <div class="value">5 <span class="unit">labs</span></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">📊</div>
+          <div class="stat-info">
+            <h4>Real-time Plots</h4>
+            <div class="value">Live <span class="unit">data</span></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange">⚙️</div>
+          <div class="stat-info">
+            <h4>RK4 Integration</h4>
+            <div class="value">60 <span class="unit">fps</span></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple">🧬</div>
+          <div class="stat-info">
+            <h4>Adjustable Parameters</h4>
+            <div class="value">20+ <span class="unit">vars</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experiment cards grid -->
+      <h3 style="margin-bottom:14px; font-size:1rem; color:var(--text-secondary);">
+        ── Choose an Experiment
+      </h3>
+      <div class="exp-grid">
+
+        <div class="exp-card" data-sim="pendulum">
+          <div class="exp-card-banner" style="background:linear-gradient(135deg,#0d2340,#1f5fa5)">⚖️</div>
+          <div class="exp-card-body">
+            <h3>Simple Pendulum</h3>
+            <p>Simulate a damped pendulum with adjustable length, mass, damping coefficient and gravitational field. Uses RK4 numerical integration.</p>
+          </div>
+          <div class="exp-card-footer">
+            <span class="badge physics">Physics</span>
+            <span style="color:var(--text-secondary)">→ Open</span>
+          </div>
+        </div>
+
+        <div class="exp-card" data-sim="projectile">
+          <div class="exp-card-banner" style="background:linear-gradient(135deg,#1a2a0d,#2a5a0d)">🎯</div>
+          <div class="exp-card-body">
+            <h3>Projectile Motion</h3>
+            <p>Launch a projectile at any angle and speed. Observe trajectory, range, maximum height, and time of flight in real time.</p>
+          </div>
+          <div class="exp-card-footer">
+            <span class="badge physics">Physics</span>
+            <span style="color:var(--text-secondary)">→ Open</span>
+          </div>
+        </div>
+
+        <div class="exp-card" data-sim="waves">
+          <div class="exp-card-banner" style="background:linear-gradient(135deg,#0d1a2a,#1a0d2a)">〰️</div>
+          <div class="exp-card-body">
+            <h3>Waves &amp; Oscilloscope</h3>
+            <p>Generate and superpose sinusoidal waves. Visualise single waves, superposition, or Lissajous figures on a virtual oscilloscope screen.</p>
+          </div>
+          <div class="exp-card-footer">
+            <span class="badge waves">Waves</span>
+            <span style="color:var(--text-secondary)">→ Open</span>
+          </div>
+        </div>
+
+        <div class="exp-card" data-sim="circuit">
+          <div class="exp-card-banner" style="background:linear-gradient(135deg,#1a0d0d,#3a1a0d)">⚡</div>
+          <div class="exp-card-body">
+            <h3>RC / RL / RLC Circuit</h3>
+            <p>Build and analyse resistor–capacitor, resistor–inductor, and full RLC circuits. View schematic and transient response curve.</p>
+          </div>
+          <div class="exp-card-footer">
+            <span class="badge optics">Electronics</span>
+            <span style="color:var(--text-secondary)">→ Open</span>
+          </div>
+        </div>
+
+        <div class="exp-card" data-sim="chemistry">
+          <div class="exp-card-banner" style="background:linear-gradient(135deg,#0d1a0d,#1a3a1a)">🧪</div>
+          <div class="exp-card-body">
+            <h3>Acid–Base Titration</h3>
+            <p>Perform a virtual strong-acid / strong-base titration. Watch the pH curve in real time as you add titrant from the burette.</p>
+          </div>
+          <div class="exp-card-footer">
+            <span class="badge chemistry">Chemistry</span>
+            <span style="color:var(--text-secondary)">→ Open</span>
+          </div>
+        </div>
+
+      </div><!-- /exp-grid -->
+    </section>
+
+    <!-- ════ PENDULUM PAGE ════════════════════════════ -->
+    <section id="page-pendulum" class="page">
+      <div class="page-header">
+        <h2>⚖️ Simple Pendulum</h2>
+        <p>Damped pendulum — RK4 numerical integration at 60 fps.</p>
+      </div>
+
+      <div class="sim-layout">
+        <!-- Canvas -->
+        <div>
+          <div class="canvas-wrap">
+            <div class="canvas-toolbar">
+              <span class="sim-title">Pendulum Simulation</span>
+              <button class="btn btn-success btn-sm" id="pend-play">▶ Play</button>
+              <button class="btn btn-secondary btn-sm" id="pend-pause">⏸ Pause</button>
+              <button class="btn btn-danger btn-sm" id="pend-reset">↺ Reset</button>
+            </div>
+            <canvas id="pendulumCanvas" style="height:400px"></canvas>
+          </div>
+
+          <!-- Data table -->
+          <div class="card" style="margin-top:16px">
+            <h4 style="font-size:.85rem;margin-bottom:10px;color:var(--text-secondary)">
+              📋 Data Log (last 40 entries)
+            </h4>
+            <div style="overflow-y:auto;max-height:180px">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>t (s)</th>
+                    <th>θ (°)</th>
+                    <th>ω (rad/s)</th>
+                    <th>KE (J)</th>
+                    <th>PE (J)</th>
+                  </tr>
+                </thead>
+                <tbody id="pend-log"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Control panel -->
+        <div class="control-panel">
+          <div class="control-group">
+            <h4>Parameters</h4>
+
+            <div class="control-row">
+              <div class="control-label">Length (L) <span id="pend-length-val">1.0 m</span></div>
+              <input type="range" id="pend-length" min="0.2" max="3" step="0.05" value="1" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Mass (m) <span id="pend-mass-val">1.0 kg</span></div>
+              <input type="range" id="pend-mass" min="0.1" max="5" step="0.1" value="1" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Damping (b) <span id="pend-damp-val">0.05</span></div>
+              <input type="range" id="pend-damp" min="0" max="2" step="0.01" value="0.05" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Gravity (g) <span id="pend-grav-val">9.81 m/s²</span></div>
+              <input type="range" id="pend-gravity" min="1" max="25" step="0.1" value="9.81" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Live Readings</h4>
+            <div class="readings">
+              <div class="reading-item">
+                <div class="label">Angle θ</div>
+                <div class="val" id="pend-angle">—</div>
+              </div>
+              <div class="reading-item">
+                <div class="label">ω (rad/s)</div>
+                <div class="val" id="pend-omega">—</div>
+              </div>
+              <div class="reading-item">
+                <div class="label">Period T</div>
+                <div class="val" id="pend-period">—</div>
+              </div>
+              <div class="reading-item">
+                <div class="label">Energy (J)</div>
+                <div class="val" id="pend-energy">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Theory</h4>
+            <div class="log-box">
+              <div>θ″ = -(g/L)·sin(θ) - (b/m)·θ′</div>
+              <div class="log-info">T = 2π√(L/g)  [small angles]</div>
+              <div class="log-info">KE = ½mv²</div>
+              <div class="log-info">PE = mgL(1-cosθ)</div>
+              <div class="log-warn">RK4 integration, Δt/8 sub-steps</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ PROJECTILE PAGE ══════════════════════════ -->
+    <section id="page-projectile" class="page">
+      <div class="page-header">
+        <h2>🎯 Projectile Motion</h2>
+        <p>2D kinematics — adjust launch angle, speed, gravity and mass.</p>
+      </div>
+
+      <div class="sim-layout">
+        <div>
+          <div class="canvas-wrap">
+            <div class="canvas-toolbar">
+              <span class="sim-title">Projectile Simulation</span>
+              <button class="btn btn-success btn-sm" id="proj-launch">🚀 Launch</button>
+              <button class="btn btn-danger btn-sm" id="proj-reset">↺ Reset</button>
+            </div>
+            <canvas id="projCanvas" style="height:360px"></canvas>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <div class="control-group">
+            <h4>Launch Parameters</h4>
+
+            <div class="control-row">
+              <div class="control-label">Angle (θ) <span id="proj-angle-val">45°</span></div>
+              <input type="range" id="proj-angle" min="1" max="89" step="1" value="45" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Initial Speed <span id="proj-speed-val">30 m/s</span></div>
+              <input type="range" id="proj-speed" min="5" max="100" step="1" value="30" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Gravity (g) <span id="proj-grav-val">9.81 m/s²</span></div>
+              <input type="range" id="proj-grav" min="1" max="25" step="0.1" value="9.81" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Mass (m) <span id="proj-mass-val">1.0 kg</span></div>
+              <input type="range" id="proj-mass" min="0.1" max="10" step="0.1" value="1" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Predicted Values</h4>
+            <div class="readings">
+              <div class="reading-item">
+                <div class="label">Range (R)</div>
+                <div class="val" id="proj-range">—</div>
+              </div>
+              <div class="reading-item">
+                <div class="label">Max Height</div>
+                <div class="val" id="proj-height">—</div>
+              </div>
+              <div class="reading-item" style="grid-column:span 2">
+                <div class="label">Flight Time</div>
+                <div class="val" id="proj-time">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Equations</h4>
+            <div class="log-box">
+              <div class="log-info">x(t) = v₀·cos(θ)·t</div>
+              <div class="log-info">y(t) = v₀·sin(θ)·t - ½g·t²</div>
+              <div class="log-info">R = v₀²·sin(2θ)/g</div>
+              <div class="log-info">H = (v₀·sinθ)²/(2g)</div>
+              <div class="log-warn">No air resistance in this model</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ WAVES PAGE ══════════════════════════════ -->
+    <section id="page-waves" class="page">
+      <div class="page-header">
+        <h2>〰️ Waves &amp; Oscilloscope</h2>
+        <p>Visualise sinusoidal waves, superposition, and Lissajous figures.</p>
+      </div>
+
+      <div class="sim-layout">
+        <div>
+          <div class="canvas-wrap">
+            <div class="canvas-toolbar">
+              <span class="sim-title">Virtual Oscilloscope</span>
+              <button class="btn btn-success btn-sm" id="wave-play">▶ Run</button>
+              <button class="btn btn-secondary btn-sm" id="wave-pause">⏸ Pause</button>
+              <button class="btn btn-danger btn-sm" id="wave-reset">↺ Reset</button>
+              <select id="wave-mode" style="margin-left:8px;width:auto;padding:4px 8px;font-size:.8rem">
+                <option value="wave1">Wave 1 only</option>
+                <option value="both">Both + Sum</option>
+                <option value="superposition" selected>Superposition</option>
+                <option value="lissajous">Lissajous</option>
+              </select>
+            </div>
+            <canvas id="waveCanvas" style="height:320px"></canvas>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <div class="control-group">
+            <h4>Wave 1 (Blue)</h4>
+            <div class="control-row">
+              <div class="control-label">Frequency <span id="wave-f1-val">2.0 Hz</span></div>
+              <input type="range" id="wave-freq1" min="0.1" max="10" step="0.1" value="2" />
+            </div>
+            <div class="control-row">
+              <div class="control-label">Amplitude <span id="wave-a1-val">1.0</span></div>
+              <input type="range" id="wave-amp1" min="0.1" max="1" step="0.05" value="1" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Wave 2 (Orange)</h4>
+            <div class="control-row">
+              <div class="control-label">Frequency <span id="wave-f2-val">3.0 Hz</span></div>
+              <input type="range" id="wave-freq2" min="0.1" max="10" step="0.1" value="3" />
+            </div>
+            <div class="control-row">
+              <div class="control-label">Amplitude <span id="wave-a2-val">0.7</span></div>
+              <input type="range" id="wave-amp2" min="0.1" max="1" step="0.05" value="0.7" />
+            </div>
+            <div class="control-row">
+              <div class="control-label">Phase Δφ <span id="wave-ph-val">0°</span></div>
+              <input type="range" id="wave-phase" min="0" max="360" step="5" value="0" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Theory</h4>
+            <div class="log-box">
+              <div class="log-info">y₁ = A₁·sin(2πf₁t)</div>
+              <div class="log-info">y₂ = A₂·sin(2πf₂t + φ)</div>
+              <div class="log-info">y = y₁ + y₂  [superposition]</div>
+              <div class="log-warn">Lissajous: parametric x(t),y(t)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ CIRCUIT PAGE ════════════════════════════ -->
+    <section id="page-circuit" class="page">
+      <div class="page-header">
+        <h2>⚡ Electric Circuit Simulator</h2>
+        <p>RC, RL and RLC circuit analysis with schematic and transient response.</p>
+      </div>
+
+      <div class="sim-layout">
+        <div>
+          <div class="canvas-wrap">
+            <div class="canvas-toolbar">
+              <span class="sim-title">Circuit Schematic</span>
+              <select id="circuit-type" style="width:auto;padding:4px 10px;font-size:.85rem">
+                <option value="RC" selected>RC Circuit</option>
+                <option value="RL">RL Circuit</option>
+                <option value="RLC">RLC Circuit</option>
+              </select>
+            </div>
+            <canvas id="circuitCanvas" style="height:260px"></canvas>
+          </div>
+
+          <div class="chart-wrap">
+            <div class="chart-title">📈 Transient Response — Voltage vs. Time</div>
+            <canvas id="circuitChart" style="height:170px;display:block;width:100%"></canvas>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <div class="control-group">
+            <h4>Components</h4>
+
+            <div class="control-row">
+              <div class="control-label">Voltage (V) <span id="circ-volt-val">10 V</span></div>
+              <input type="range" id="circuit-volt" min="1" max="50" step="1" value="10" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Resistance (R) <span id="circ-r-val">1000 Ω</span></div>
+              <input type="range" id="circuit-r" min="10" max="10000" step="10" value="1000" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Capacitance (C) <span id="circ-c-val">100 µF</span></div>
+              <input type="range" id="circuit-c" min="1" max="1000" step="1" value="100" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Inductance (L) <span id="circ-l-val">100 mH</span></div>
+              <input type="range" id="circuit-l" min="1" max="1000" step="1" value="100" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Derived Values</h4>
+            <div class="readings">
+              <div class="reading-item">
+                <div class="label">τ (time const.)</div>
+                <div class="val" id="circ-tau">—</div>
+              </div>
+              <div class="reading-item">
+                <div class="label">f₀ (resonance)</div>
+                <div class="val" id="circ-freq">—</div>
+              </div>
+              <div class="reading-item">
+                <div class="label">I (current)</div>
+                <div class="val" id="circ-curr">—</div>
+              </div>
+              <div class="reading-item">
+                <div class="label">Power (W)</div>
+                <div class="val" id="circ-power">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Equations</h4>
+            <div class="log-box">
+              <div class="log-info">τ(RC) = R·C</div>
+              <div class="log-info">τ(RL) = L/R</div>
+              <div class="log-info">f₀ = 1/(2π√LC)</div>
+              <div class="log-info">Vc(t) = V(1-e^{-t/τ})</div>
+              <div class="log-warn">Step-response, DC source</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ CHEMISTRY PAGE ════════════════════════ -->
+    <section id="page-chemistry" class="page">
+      <div class="page-header">
+        <h2>🧪 Acid–Base Titration</h2>
+        <p>Strong acid vs. strong base — add titrant and watch the pH change in real time.</p>
+      </div>
+
+      <div class="sim-layout">
+        <div>
+          <div class="canvas-wrap">
+            <div class="canvas-toolbar">
+              <span class="sim-title">Burette &amp; Flask</span>
+            </div>
+            <canvas id="chemCanvas" style="height:320px"></canvas>
+          </div>
+
+          <div class="chart-wrap">
+            <div class="chart-title">📈 Titration Curve — pH vs. Volume of Base Added</div>
+            <canvas id="chemChart" style="height:180px;display:block;width:100%"></canvas>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <div class="control-group">
+            <h4>Acid Solution (Flask)</h4>
+
+            <div class="control-row">
+              <div class="control-label">Concentration <span id="chem-conc-val">0.10 mol/L</span></div>
+              <input type="range" id="chem-conc" min="0.01" max="1" step="0.01" value="0.1" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Volume <span id="chem-vol-val">25 mL</span></div>
+              <input type="range" id="chem-vol" min="5" max="100" step="1" value="25" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Base Titrant (Burette)</h4>
+
+            <div class="control-row">
+              <div class="control-label">Concentration <span id="chem-tit-val">0.10 mol/L</span></div>
+              <input type="range" id="chem-tit-conc" min="0.01" max="1" step="0.01" value="0.1" />
+            </div>
+
+            <div class="control-row">
+              <div class="control-label">Volume Added <span id="chem-added-disp">0 mL</span></div>
+              <input type="range" id="chem-added" min="0" max="60" step="0.1" value="0" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Live Readings</h4>
+            <div class="readings">
+              <div class="reading-item">
+                <div class="label">Current pH</div>
+                <div class="val" id="chem-ph">—</div>
+              </div>
+              <div class="reading-item">
+                <div class="label">Added (mL)</div>
+                <div class="val" id="chem-added-val">—</div>
+              </div>
+              <div class="reading-item" style="grid-column:span 2">
+                <div class="label">Equivalence Volume</div>
+                <div class="val" id="chem-vol-eq">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h4>Chemistry</h4>
+            <div class="log-box">
+              <div class="log-info">HCl + NaOH → NaCl + H₂O</div>
+              <div class="log-info">pH = -log[H⁺]</div>
+              <div class="log-info">pOH = -log[OH⁻]</div>
+              <div class="log-info">pH + pOH = 14</div>
+              <div class="log-warn">Veq = Ca·Va / Cb</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="simulation.js"></script>
+</body>
+</html>
