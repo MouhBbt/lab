@@ -1,16 +1,39 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Layout from '../components/Layout';
 import api from '../api/axios';
-import { Users, BookOpen, Filter, CheckCircle, XCircle, Trophy } from 'lucide-react';
+import { Users, BookOpen, Filter, CheckCircle, XCircle, Trophy, LayoutDashboard } from 'lucide-react';
 
 const LEVEL_LABELS = { primary: 'Primary School', middle: 'Middle School', high: 'High School' };
 
-export default function TeacherDashboard() {
+export default function TeacherDashboard({ initialTab }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Determine active tab from route or prop
+  const getTabFromPath = () => {
+    if (location.pathname === '/teacher/students' || initialTab === 'students') return 'overview';
+    if (location.pathname === '/teacher/results' || initialTab === 'results') return 'results';
+    return 'overview';
+  };
+
   const [students, setStudents] = useState([]);
   const [results, setResults] = useState([]);
   const [filters, setFilters] = useState({ wilaya: '', commune: '', school: '', level: '' });
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(getTabFromPath);
   const [loading, setLoading] = useState(true);
+
+  // Sync tab with route changes
+  useEffect(() => {
+    setActiveTab(getTabFromPath());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    if (tab === 'overview') navigate('/teacher/students');
+    else if (tab === 'results') navigate('/teacher/results');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +78,17 @@ export default function TeacherDashboard() {
     <Layout>
       <div className="p-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-1">Teacher Dashboard</h1>
+          <div className="flex items-center gap-3 mb-1">
+            {location.pathname !== '/teacher' && (
+              <button onClick={() => navigate('/teacher')}
+                className="text-gray-400 hover:text-white transition-colors">
+                <LayoutDashboard size={20}/>
+              </button>
+            )}
+            <h1 className="text-3xl font-bold text-white">
+              {activeTab === 'results' ? 'Student Results' : 'Students'}
+            </h1>
+          </div>
           <p className="text-gray-400">Monitor student progress and experiment results</p>
         </div>
 
@@ -98,7 +131,7 @@ export default function TeacherDashboard() {
             { key: 'overview', label: 'Students', icon: <Users size={15}/> },
             { key: 'results', label: 'Results', icon: <BookOpen size={15}/> },
           ].map(t => (
-            <button key={t.key} onClick={() => setActiveTab(t.key)}
+            <button key={t.key} onClick={() => handleTabChange(t.key)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === t.key ? 'bg-cyan-500 text-white' : 'text-gray-400 hover:text-white'
               }`}>

@@ -27,6 +27,8 @@ function AppRoutes() {
       <Route path="/dashboard" element={<ProtectedRoute role="student"><StudentDashboard/></ProtectedRoute>}/>
       <Route path="/lab/:id" element={<ProtectedRoute role="student"><VirtualLab/></ProtectedRoute>}/>
       <Route path="/teacher" element={<ProtectedRoute role="teacher"><TeacherDashboard/></ProtectedRoute>}/>
+      <Route path="/teacher/students" element={<ProtectedRoute role="teacher"><TeacherDashboard initialTab="students"/></ProtectedRoute>}/>
+      <Route path="/teacher/results" element={<ProtectedRoute role="teacher"><TeacherDashboard initialTab="results"/></ProtectedRoute>}/>
       <Route path="/" element={<Navigate to="/login" replace/>}/>
       <Route path="*" element={<Navigate to="/login" replace/>}/>
     </Routes>

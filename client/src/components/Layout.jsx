@@ -14,13 +14,16 @@ export default function Layout({ children }) {
 
   const navItems = user?.role === 'teacher'
     ? [
-        { to: '/teacher', icon: <LayoutDashboard size={18}/>, label: 'Dashboard' },
-        { to: '/teacher/students', icon: <Users size={18}/>, label: 'Students' },
-        { to: '/teacher/results', icon: <BookOpen size={18}/>, label: 'Results' },
+        { to: '/teacher', icon: <LayoutDashboard size={18}/>, label: 'Dashboard', exact: true },
+        { to: '/teacher/students', icon: <Users size={18}/>, label: 'Students', exact: false },
+        { to: '/teacher/results', icon: <BookOpen size={18}/>, label: 'Results', exact: false },
       ]
     : [
-        { to: '/dashboard', icon: <LayoutDashboard size={18}/>, label: 'Dashboard' },
+        { to: '/dashboard', icon: <LayoutDashboard size={18}/>, label: 'Dashboard', exact: false },
       ];
+
+  const isActive = (item) =>
+    item.exact ? location.pathname === item.to : location.pathname.startsWith(item.to);
 
   return (
     <div className="min-h-screen bg-gray-950 flex">
@@ -36,7 +39,7 @@ export default function Layout({ children }) {
           {navItems.map(item => (
             <Link key={item.to} to={item.to}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                location.pathname === item.to 
+                isActive(item)
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-400 hover:bg-gray-800 hover:text-white'
               }`}>

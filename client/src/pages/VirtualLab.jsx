@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Box, Cylinder, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
+import ReactMarkdown from 'react-markdown';
 import Layout from '../components/Layout';
 import api from '../api/axios';
 import { ArrowLeft, Lightbulb, CheckCircle, Info, HelpCircle, Trophy } from 'lucide-react';
@@ -301,22 +302,28 @@ export default function VirtualLab() {
         {/* Content */}
         <div className="flex-1 overflow-hidden">
           {tab === 'instructions' && (
-            <div className="h-full overflow-auto p-8">
+            <div className="h-full overflow-auto p-8 max-w-3xl mx-auto">
               <h2 className="text-2xl font-bold text-white mb-4">{experiment.title}</h2>
-              <p className="text-gray-400 mb-6">{experiment.description}</p>
+              {experiment.description && (
+                <div className="prose prose-invert prose-sm max-w-none mb-6 text-gray-300">
+                  <ReactMarkdown>{experiment.description}</ReactMarkdown>
+                </div>
+              )}
               <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                 <Info size={18} className="text-cyan-400"/> Step-by-Step Instructions
               </h3>
-              <ol className="space-y-3">
+              <ol className="space-y-3 mb-8">
                 {experiment.instructions?.map((inst, i) => (
                   <li key={i} className="flex gap-3 text-gray-300">
                     <span className="flex-shrink-0 w-7 h-7 bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 rounded-full flex items-center justify-center text-sm font-bold">{i+1}</span>
-                    {inst}
+                    <div className="prose prose-invert prose-sm max-w-none pt-0.5">
+                      <ReactMarkdown>{inst}</ReactMarkdown>
+                    </div>
                   </li>
                 ))}
               </ol>
               <button onClick={() => setTab('lab')}
-                className="mt-8 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
                 Start Experiment →
               </button>
             </div>
